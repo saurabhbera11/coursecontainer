@@ -5,6 +5,8 @@ export const StyledNavBar=styled.nav`
     align-items: center;
     justify-content: space-between;
     height: 5rem;
+    margin: 0 10px;
+    
     .left{
         display: flex;
         align-items: center;

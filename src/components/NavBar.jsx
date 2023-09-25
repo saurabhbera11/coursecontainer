@@ -17,7 +17,7 @@ function NavBar() {
     <StyledNavBar>
       <div className="left">
         <div className="logo">
-          <img src="src/assets/logo.png" alt="" />
+          <img src="src/assets/logo_2.png" alt="" />
         </div>
         <div className="links">
           <Button
