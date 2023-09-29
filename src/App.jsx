@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import LandingPage from './views/LandingPage';
 import CoursesPage from './views/CoursesPage';
+import SignUp from './views/SignUp';
 
 
 const router = createBrowserRouter([
@@ -22,10 +23,15 @@ const router = createBrowserRouter([
   {
     path:"/courses",
     element: <CoursesPage/>
+  },{
+    path:"/signUp",
+    element: <SignUp/>
   }
 ]);
 
 function App() {
+
+
   return (
     <>
        <RouterProvider router={router} />
