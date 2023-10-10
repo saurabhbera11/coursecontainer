@@ -9,9 +9,11 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+
 function NavBar() {
   const [active, setActive] = useState(0);
-
+  const navigate=useNavigate();
   return (
     // <StyledNavBar>
     <StyledNavBar>
@@ -58,7 +60,9 @@ function NavBar() {
         </Toolbar>
 
         <div className="user">
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={()=>{
+    navigate("/signin")
+  }}>
             Login
           </Button>
         </div>

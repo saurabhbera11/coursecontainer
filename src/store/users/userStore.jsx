@@ -1,35 +1,32 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 import React from "react";
-const CurrentUserContext = createContext(null);
-const CurrentUserDispatchContext = createContext(null);
-import axios from "axios";
 
-function userStore({ children }) {
-  const initialUser = {
-    username: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    token: null,
-  };
-  const [currentUser, currentUserDispatch] = useReducer(
-    userReducer,
-    initialUser
-  );
+// Create a context for managing user states
+const UserContext = createContext(null);
+
+// Define a user reducer to handle user actions
+function userReducer(users, action) {
+  switch (action.type) {
+    case "LOGIN":
+      // Add the user to the list of logged-in users
+      return {
+      };
+    case "LOGOUT":
+      return 
+    default:
+      return users;
+  }
+}
+
+function UserStore({ children }) {
+  // Initialize the users state as an empty object
+  const [users, dispatch] = useReducer(userReducer, {});
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <CurrentUserDispatchContext.Provider value={currentUserDispatch}>
-        {children}
-      </CurrentUserDispatchContext.Provider>
-    </CurrentUserContext.Provider>
+    <UserContext.Provider value={{ users, dispatch }}>
+      {children}
+    </UserContext.Provider>
   );
 }
 
-
-
-async function userReducer(currentUser, action) {
-  
-}
-
-export default userStore;
+export { UserContext, UserStore };
