@@ -36,7 +36,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({loggedIn,setLoggedIn}) {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +47,10 @@ export default function SignIn() {
       try{
         const response = await signIn({email,password})
         if(response.message==="Success"){
-          save('access_token', response.cookie, { secure: true, sameSite: 'Strict' });
+          if(Cookies.get("user_details")){
+            Cookies.remove("user_details");
+          }
+          save('user_details', response.cookie, { secure: true, sameSite: 'Strict' });
         // const convertedAccessToken = Cookies.get('access_token');
         // console.log(convertedAccessToken);
         toast.update(loadingid, {
