@@ -30,8 +30,8 @@ function Course({title,descripton,price="10RS",imageLink}) {
       </Typography>
     </CardContent>
     <CardActions>
-      <Button size="small">View</Button>
-      <Button size="small">Edit</Button>
+      <Button variant="contained" size="small">Express Checkout</Button>
+      <Button size="small" variant="outlined">Add to cart</Button>
     </CardActions>
   </Card>
   )

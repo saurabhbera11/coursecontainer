@@ -70,13 +70,20 @@ export default function SignUp() {
           autoClose: 2000,
         });
         setTimeout(()=>{setSuccess(true)},2000)
-      } else {
+      } else if(response === "User already exists") {
         toast.update(loadingid, {
           render: "User Already Exists",
           type: toast.TYPE.WARNING,
           autoClose: 2000,
           isLoading: false,
         });
+      } else{
+        toast.update(loadingid,{
+          render : "Error Please try again later",
+          type : toast.TYPE.ERROR,
+          autoClose: 3000,
+          isLoading: false,
+        })
       }
     } catch (err) {
       console.log(err);

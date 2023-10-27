@@ -17,14 +17,15 @@ export default async function signUp({ firstName, lastName, email, password }) {
       // User sign-up was successful
       return "Success";
       // You can handle further actions here, like updating the state with the new user information.
-    }else if(response.status === 409) {
-      return "User already exists"
-    }
-    else {
+    }else {
       return 'Error signing up: ', response.data;
     }
   } catch (error) {
-    console.error('Error signing up: ', error.message);
-    // Handle any network or other errors that may occur during the request.
+    if (error.response && error.response.status === 409) {
+      return "User already exists";
+    } else {
+      console.error('Error signing up: ', error.message);
+      // Handle any network or other errors that may occur during the request.
+    }
   }
 }

@@ -11,6 +11,7 @@ import CoursesPage from './views/CoursesPage';
 import SignUp from './views/SignUp';
 
 
+
 const router = createBrowserRouter([
   {
     path: "/",

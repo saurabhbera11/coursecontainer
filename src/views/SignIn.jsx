@@ -12,12 +12,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import signIn from '../api/users/signIn';
+import { save } from 'react-cookies';
+import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
 
 function Copyright(props) {
+  const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="">
+      <Link color="inherit" onClick={()=>{navigate('/')}}>
         Course Container
       </Link>{' '}
       {new Date().getFullYear()}
@@ -30,14 +36,52 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+export default function SignIn({loggedIn,setLoggedIn}) {
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const loadingid = toast.loading("Please wait...");
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+      const email=data.get('email')
+      const password=data.get('password')
+      try{
+        const response = await signIn({email,password})
+        if(response.message==="Success"){
+          if(Cookies.get("user_details")){
+            Cookies.remove("user_details");
+          }
+          save('user_details', response.cookie, { secure: true, sameSite: 'Strict' });
+        // const convertedAccessToken = Cookies.get('access_token');
+        // console.log(convertedAccessToken);
+        toast.update(loadingid, {
+          render: "Logged in",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+        setTimeout(()=>{
+          navigate("/");
+        }, 2000)  
+        }else if(response.message === "Unauthorized"){
+          toast.update(loadingid, {
+            render: "Invalid email or password",
+            type: toast.TYPE.WARNING,
+            autoClose: 2000,
+            isLoading: false,
+          });
+        }else{
+          toast.update(loadingid,{
+            render : "Error Please try again later",
+            type : toast.TYPE.ERROR,
+            autoClose: 3000,
+            isLoading: false,
+          })
+        }
+      
+
+      }catch(err){
+        console.error(err);
+      }
   };
 
   return (
@@ -98,7 +142,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={()=>{navigate('/signup')}} >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -107,6 +151,18 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </ThemeProvider>
   );
 }
